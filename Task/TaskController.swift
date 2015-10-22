@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class TaskController {
     
@@ -26,54 +27,47 @@ class TaskController {
         return [sampleTask1, sampleTask2, sampleTask3, sampleTask4]
     }
     
-    var tasks:[Task] = []
+    var tasks:[Task] {
+        
+        let request = NSFetchRequest(entityName: "Task")
+        
+        do {
+            return try Stack.sharedStack.managedObjectContext.executeFetchRequest(request) as! [Task]
+        } catch {
+            return []
+        }
+    }
     
     var completedTasks:[Task] {
         
-        return tasks.filter({$0.isComplete})
+        return tasks.filter({$0.isComplete.boolValue})
     }
     
     var incompleteTasks:[Task] {
         
-        return tasks.filter({!$0.isComplete})
-    }
-    
-    init() {
-        
-        // uncomment the next line to initialize with mock task data
-        // tasks = mockTasks
-        
-        loadFromPersistentStorage()
+        return tasks.filter({!$0.isComplete.boolValue})
     }
     
     func addTask(task: Task) {
         
-        tasks.append(task)
         saveToPersistentStorage()
     }
     
     func removeTask(task: Task) {
         
-        if let index = self.tasks.indexOf(task) {
-            tasks.removeAtIndex(index)
-        }
+        task.managedObjectContext?.deleteObject(task)
         saveToPersistentStorage()
     }
     
     // MARK: - Persistence
     
-    func loadFromPersistentStorage() {
-        
-        let unarchivedTasks = NSKeyedUnarchiver.unarchiveObjectWithFile(self.filePath(TaskKey))
-        
-        if let tasks = unarchivedTasks as? [Task] {
-            self.tasks = tasks
-        }
-    }
-    
     func saveToPersistentStorage() {
         
-        NSKeyedArchiver.archiveRootObject(self.tasks, toFile: self.filePath(TaskKey))
+        do {
+            try Stack.sharedStack.managedObjectContext.save()
+        } catch {
+            print("Error saving Managed Object Context. Items not saved.")
+        }
     }
     
     func filePath(key: String) -> String {
