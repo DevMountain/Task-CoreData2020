@@ -61,10 +61,8 @@ class TaskDetailTableViewController: UITableViewController {
 			task.due = due
 			task.notes = notes
 		} else {
-			
-			self.task = Task(name: name, notes: notes, due: due)
+			self.task = Task(name: name, priority: priority, notes: notes, due: due)
 		}
-		TaskController.sharedController.saveToPersistentStorage()
 	}
 	
 	func updateWithTask(task: Task) {
