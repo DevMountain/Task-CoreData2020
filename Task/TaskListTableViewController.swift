@@ -7,84 +7,108 @@
 //
 
 import UIKit
+import CoreData
 
-class TaskListTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-		let completedTasks = TaskController.sharedController.completedTasks.map { $0.name }
-		print("completed tasks: \(completedTasks)")
-		let incompleteTasks = TaskController.sharedController.incompleteTasks.map { $0.name }
-		print("incomplete tasks: \(incompleteTasks)")
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        
-        tableView.reloadData()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return TaskController.sharedController.incompleteTasks.count
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("taskCell", forIndexPath: indexPath) as! ButtonTableViewCell
-        
-        let task = TaskController.sharedController.incompleteTasks[indexPath.row]
-        
-        cell.updateWithTask(task)
-        cell.delegate = self
-        
-        return cell
-    }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            
-            let task = TaskController.sharedController.incompleteTasks[indexPath.row]
-            TaskController.sharedController.removeTask(task)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }
-    }
-
-
-    // MARK: - Navigation
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "toViewTask" {
-            
-            let destinationViewController = segue.destinationViewController as? TaskDetailTableViewController
-            
-            if let taskDetailViewController = destinationViewController {
-                
-                // force the destination view controller to draw all subviews for updating
-                _ = taskDetailViewController.view
-                
-                if let selectedRow = tableView.indexPathForSelectedRow?.row {
-                    taskDetailViewController.updateWithTask(TaskController.sharedController.incompleteTasks[selectedRow])
-                }
-            }
-        }
-    }
+class TaskListTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+	
+	lazy var fetchedResultsController: NSFetchedResultsController = {
+		let context = Stack.sharedStack.managedObjectContext
+		let fetchRequest = NSFetchRequest(entityName: "Task")
+		let sortDescriptor = NSSortDescriptor(key: "due", ascending: true)
+		fetchRequest.sortDescriptors = [sortDescriptor]
+		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		frc.delegate = self
+		return frc
+	}()
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		do {
+			try fetchedResultsController.performFetch()
+		} catch let error as NSError {
+			NSLog("Error performing fetch on NSFetchedResultsController: \(error)")
+		}
+	}
+	
+	override func viewDidAppear(animated: Bool) {
+		
+		tableView.reloadData()
+	}
+	
+	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+		guard let sections = fetchedResultsController.sections else { return 0 }
+		return sections.count
+	}
+	
+	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		guard let sections = fetchedResultsController.sections where sections.count > section else { return 0 }
+		return sections[section].numberOfObjects
+	}
+	
+	override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		guard let sections = fetchedResultsController.sections where sections.count > section else { return nil }
+		return sections[section].name
+	}
+	
+	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCellWithIdentifier("taskCell", forIndexPath: indexPath) as! ButtonTableViewCell
+		
+		if let task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task {
+			cell.updateWithTask(task)
+			cell.delegate = self
+		}
+		
+		return cell
+	}
+	
+	override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+		if editingStyle == .Delete {
+		
+			guard let task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task else { return }
+			let moc = Stack.sharedStack.managedObjectContext
+			moc.deleteObject(task)
+		}
+	}
+	
+	// MARK: - NSFetchedResultsControllerDelegate
+	
+	func controllerDidChangeContent(controller: NSFetchedResultsController) {
+		tableView.reloadData()
+	}
+	
+	// MARK: - Navigation
+	
+	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+		
+		if segue.identifier == "toViewTask" {
+			
+			let destinationViewController = segue.destinationViewController as? TaskDetailTableViewController
+			
+			if let taskDetailViewController = destinationViewController {
+				
+				// force the destination view controller to draw all subviews for updating
+				_ = taskDetailViewController.view
+				
+				if let indexPath = tableView.indexPathForSelectedRow,
+					task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task {
+						taskDetailViewController.updateWithTask(task)
+				}
+			}
+		}
+	}
 }
 
 extension TaskListTableViewController: ButtonTableViewCellDelegate {
-    
-    func buttonCellButtonTapped(sender: ButtonTableViewCell) {
-        
-        let indexPath = tableView.indexPathForCell(sender)!
-        
-        let task = TaskController.sharedController.incompleteTasks[indexPath.row]
-        task.isComplete = !task.isComplete.boolValue
-        TaskController.sharedController.saveToPersistentStorage()
-        
-        tableView.reloadData()
-    }
+	
+	func buttonCellButtonTapped(sender: ButtonTableViewCell) {
+		
+		guard let indexPath = tableView.indexPathForCell(sender),
+			task = fetchedResultsController.objectAtIndexPath(indexPath) as? Task else { return }
+		
+		task.isComplete = !task.isComplete.boolValue
+		let _ = try? Stack.sharedStack.managedObjectContext.save()
+		
+		tableView.reloadData()
+	}
 }
