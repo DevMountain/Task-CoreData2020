@@ -26,28 +26,30 @@ class TaskController {
         
         return [sampleTask1, sampleTask2, sampleTask3, sampleTask4]
     }
-    
+	
+	private func tasksWithPredicate(predicate: NSPredicate?) -> [Task] {
+		let request = NSFetchRequest(entityName: "Task")
+		request.predicate = predicate
+		do {
+			let moc = Stack.sharedStack.managedObjectContext
+			return try moc.executeFetchRequest(request) as! [Task]
+		} catch {
+			return []
+		}
+	}
+	
     var tasks:[Task] {
-        
-        let request = NSFetchRequest(entityName: "Task")
-        
-        do {
-            return try Stack.sharedStack.managedObjectContext.executeFetchRequest(request) as! [Task]
-        } catch {
-            return []
-        }
+		return tasksWithPredicate(nil)
     }
     
     var completedTasks:[Task] {
-        
-        return tasks.filter({$0.isComplete.boolValue})
+		return tasksWithPredicate(NSPredicate(format: "isComplete == TRUE"))
     }
     
     var incompleteTasks:[Task] {
-        
-        return tasks.filter({!$0.isComplete.boolValue})
+		return tasksWithPredicate(NSPredicate(format: "isComplete == FALSE"))
     }
-    
+	
     func addTask(task: Task) {
         
         saveToPersistentStorage()
