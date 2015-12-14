@@ -16,7 +16,7 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
 		let fetchRequest = NSFetchRequest(entityName: "Task")
 		let sortDescriptor = NSSortDescriptor(key: "due", ascending: true)
 		fetchRequest.sortDescriptors = [sortDescriptor]
-		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+		let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: "priority", cacheName: nil)
 		frc.delegate = self
 		return frc
 	}()
