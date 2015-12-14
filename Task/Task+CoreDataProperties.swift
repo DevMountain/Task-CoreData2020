@@ -13,10 +13,11 @@ import Foundation
 import CoreData
 
 extension Task {
-
-    @NSManaged var due: NSDate?
-    @NSManaged var isComplete: NSNumber
-    @NSManaged var name: String
-    @NSManaged var notes: String?
-
+	
+	@NSManaged var due: NSDate?
+	@NSManaged var isComplete: NSNumber
+	@NSManaged var name: String
+	@NSManaged var notes: String?
+	@NSManaged var priority: String
+	
 }

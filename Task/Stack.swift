@@ -20,8 +20,10 @@ class Stack {
         guard let model = NSManagedObjectModel.mergedModelFromBundles([bundle])
             else { fatalError("model not found") }
         let psc = NSPersistentStoreCoordinator(managedObjectModel: model)
+		let options = [NSMigratePersistentStoresAutomaticallyOption : true,
+			NSInferMappingModelAutomaticallyOption : true]
         try! psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
-            URL: storeURL(), options: nil)
+            URL: storeURL(), options: options)
         let context = NSManagedObjectContext(
             concurrencyType: .MainQueueConcurrencyType)
         context.persistentStoreCoordinator = psc

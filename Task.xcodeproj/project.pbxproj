@@ -67,6 +67,7 @@
 		68D81D911BD89FD100A9F8FE /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		68D81D971BD8A05B00A9F8FE /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		68D81D981BD8A05B00A9F8FE /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		9D66A5CB1C1E625F00F3A607 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -549,9 +550,10 @@
 		68D81D8F1BD89FD100A9F8FE /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				9D66A5CB1C1E625F00F3A607 /* Model 2.xcdatamodel */,
 				68D81D901BD89FD100A9F8FE /* Model.xcdatamodel */,
 			);
-			currentVersion = 68D81D901BD89FD100A9F8FE /* Model.xcdatamodel */;
+			currentVersion = 9D66A5CB1C1E625F00F3A607 /* Model 2.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

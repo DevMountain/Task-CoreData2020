@@ -15,6 +15,7 @@ class TaskDetailTableViewController: UITableViewController {
     var dueDateValue: NSDate?
     
     @IBOutlet weak var taskNameTextField: UITextField!
+	@IBOutlet weak var taskPriorityTextField: UITextField!
     @IBOutlet weak var taskDueTextField: UITextField!
     @IBOutlet weak var taskNotesTextView: UITextView!
     @IBOutlet var dueDatePicker: UIDatePicker!
@@ -50,18 +51,21 @@ class TaskDetailTableViewController: UITableViewController {
     func updateTask() {
         
         let name = taskNameTextField.text!
+		let priority = taskPriorityTextField.text!
         let due = dueDateValue
         let notes = taskNotesTextView.text
         
         if let task = self.task {
             task.name = name
+			task.priority = priority
             task.due = due
             task.notes = notes
         } else {
             
-            let newTask = Task(name: name, notes: notes, due: due)
+            let newTask = Task(name: name, priority: priority, notes: notes, due: due)
             TaskController.sharedController.addTask(newTask)
         }
+		TaskController.sharedController.saveToPersistentStorage()
     }
     
     func updateWithTask(task: Task) {
@@ -69,6 +73,8 @@ class TaskDetailTableViewController: UITableViewController {
         
         title = task.name
         taskNameTextField.text = task.name
+		
+		taskPriorityTextField.text = task.priority
         
         if let due = task.due {
             taskDueTextField.text = due.stringValue()

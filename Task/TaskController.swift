@@ -30,6 +30,7 @@ class TaskController {
 	private func tasksWithPredicate(predicate: NSPredicate?) -> [Task] {
 		let request = NSFetchRequest(entityName: "Task")
 		request.predicate = predicate
+		request.sortDescriptors = [NSSortDescriptor(key: "due", ascending: true)]
 		do {
 			let moc = Stack.sharedStack.managedObjectContext
 			return try moc.executeFetchRequest(request) as! [Task]
