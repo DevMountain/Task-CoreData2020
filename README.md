@@ -219,15 +219,16 @@ UIDatePicker is used to capture date and time information from a user. By settin
     * note: Drag a UIDatePicker object to the outline area of the Storyboard, Interface Builder will drop it directly beneath the First Responder object
 2. Set the UIDatePicker to Date mode
 3. Create an IBOutlet from the UIDatePicker supplementary view to the class file named ```dueDatePicker```
-4. Create an IBAction from the UIDatePicker supplementary view to the class file named ```datePickerValueChanged```
+4. In ```ViewDidLoad``` replace the keyboard of the UITextField you are using to capture the due date with your UIDatePicker (hint: ```textField.inputView = datePicker```)
+5. Create an IBAction from the UIDatePicker supplementary view to the class file named ```datePickerValueChanged```
     * note: Choose UIDatePicker as the sender type so that you do not need to cast the object to get the date off of it
-5. Create an optional due date placeholder property ```dueDateValue```
-6. Implement the action to store the updated date value to ```dueDateValue```
+6. Create an optional due date placeholder property ```dueDateValue```
+7. Implement the action to store the updated date value to ```dueDateValue```
 
 Dismissing the keyboard can be done in many ways. You can use the ```textFieldShouldReturn``` delegate function on the system keyboard. When using a custom keyboard, you have two common options: add toolbar with a Done button that resigns first responder as the field's input accessory, or add a tap gesture recognizer that does the same.
 
-7. Add a UITapGestureRecognizer object to Table View on the Task Detail Scene
-8. Create an IBAction from the UITapGestureRecognizer named ```userTappedView``` that resigns first responder on all text fields or text views
+8. Add a UITapGestureRecognizer object to Table View on the Task Detail Scene
+9. Create an IBAction from the UITapGestureRecognizer named ```userTappedView``` that resigns first responder on all text fields or text views
 
 ### Segue
 
