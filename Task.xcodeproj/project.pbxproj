@@ -94,13 +94,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1A04AB001CEA670100AE72A5 /* ViewControllers */ = {
+		1A04AB001CEA670100AE72A5 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				68D78A571BD6C7A100509A87 /* TaskDetailTableViewController.swift */,
 				1A8289D41CEB8827001C9887 /* TaskListTableViewController.swift */,
 			);
-			name = ViewControllers;
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		1A04AB011CEA670900AE72A5 /* Views */ = {
@@ -111,22 +111,22 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		1A04AB021CEA670F00AE72A5 /* ModelControllers */ = {
+		1A04AB021CEA670F00AE72A5 /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				68D78A5B1BD6C98E00509A87 /* TaskController.swift */,
 			);
-			name = ModelControllers;
+			name = "Model Controllers";
 			sourceTree = "<group>";
 		};
-		1A04AB031CEA671500AE72A5 /* ModelObjects */ = {
+		1A04AB031CEA671500AE72A5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				68D81D8F1BD89FD100A9F8FE /* Model.xcdatamodeld */,
+				68D81D911BD89FD100A9F8FE /* Stack.swift */,
 				68D81D971BD8A05B00A9F8FE /* Task+CoreDataProperties.swift */,
 				68D81D981BD8A05B00A9F8FE /* Task.swift */,
 			);
-			name = ModelObjects;
+			name = Model;
 			sourceTree = "<group>";
 		};
 		68D78A191BD6C26400509A87 = {
@@ -153,16 +153,12 @@
 			isa = PBXGroup;
 			children = (
 				68D78A251BD6C26500509A87 /* AppDelegate.swift */,
-				68D78A291BD6C26500509A87 /* Main.storyboard */,
-				1A04AB031CEA671500AE72A5 /* ModelObjects */,
-				1A04AB021CEA670F00AE72A5 /* ModelControllers */,
-				1A04AB001CEA670100AE72A5 /* ViewControllers */,
+				1A04AB031CEA671500AE72A5 /* Model */,
+				1A04AB021CEA670F00AE72A5 /* Model Controllers */,
+				1A04AB001CEA670100AE72A5 /* View Controllers */,
 				1A04AB011CEA670900AE72A5 /* Views */,
-				68D78A611BD6FC6F00509A87 /* DateHelpers.swift */,
-				68D81D911BD89FD100A9F8FE /* Stack.swift */,
-				68D78A2C1BD6C26500509A87 /* Assets.xcassets */,
-				68D78A2E1BD6C26500509A87 /* LaunchScreen.storyboard */,
-				68D78A311BD6C26500509A87 /* Info.plist */,
+				9DB71AC51DA6B53A00E1353E /* Utilities */,
+				9DB71AC41DA6B46900E1353E /* Resources */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -183,6 +179,26 @@
 				68D78A471BD6C26500509A87 /* Info.plist */,
 			);
 			path = TaskUITests;
+			sourceTree = "<group>";
+		};
+		9DB71AC41DA6B46900E1353E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				68D81D8F1BD89FD100A9F8FE /* Model.xcdatamodeld */,
+				68D78A291BD6C26500509A87 /* Main.storyboard */,
+				68D78A2C1BD6C26500509A87 /* Assets.xcassets */,
+				68D78A2E1BD6C26500509A87 /* LaunchScreen.storyboard */,
+				68D78A311BD6C26500509A87 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		9DB71AC51DA6B53A00E1353E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				68D78A611BD6FC6F00509A87 /* DateHelpers.swift */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -16,24 +16,25 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
         TaskController.sharedController.fetchedResultsController.delegate = self
     }
 
-    // MARK: - Table view data source
+    // MARK: UITableViewDataSource/Delegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let sections = TaskController.sharedController.fetchedResultsController.sections else {return 1}
+        guard let sections = TaskController.sharedController.fetchedResultsController.sections else { return 1 }
         return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = TaskController.sharedController.fetchedResultsController.sections else {return 0}
+        guard let sections = TaskController.sharedController.fetchedResultsController.sections else { return 0 }
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? ButtonTableViewCell else { return ButtonTableViewCell() }
+		var cell: ButtonTableViewCell! = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? ButtonTableViewCell
+		if cell == nil { cell = ButtonTableViewCell() }
 
 		let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-        cell.updateWithTask(task)
+        cell.update(withTask: task)
         cell.delegate = self
         return cell
     }
@@ -41,6 +42,7 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let sectionInfo = TaskController.sharedController.fetchedResultsController.sections,
             let index = Int(sectionInfo[section].name) else {return nil}
+
         if index == 0 {
             return "Incomplete Tasks"
         } else {
@@ -48,15 +50,14 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
-    // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-            TaskController.sharedController.removeTask(task)
+			TaskController.sharedController.remove(task: task)
         }
     }
     
-    // MARK: - NSFetchedResultsControllerDelegate
+    // MARK: NSFetchedResultsControllerDelegate
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -96,25 +97,23 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
         tableView.endUpdates()
     }
     
-    // MARK: - ButtonTableViewCellDelegate
+    // MARK: ButtonTableViewCellDelegate
     
     func buttonCellButtonTapped(_ sender: ButtonTableViewCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
 		let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-        TaskController.sharedController.isCompleteValueToggle(task)
+        TaskController.sharedController.toggleIsCompleteFor(task: task)
     }
 
-    // MARK: - Navigation
+    // MARK: Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toViewTask" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
 			
 			let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-            let destinationVC = segue.destination as? TaskDetailTableViewController
-            destinationVC?.task = task
+            let detailVC = segue.destination as? TaskDetailTableViewController
+            detailVC?.task = task
         }
     }
-
 }
