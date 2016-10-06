@@ -12,7 +12,7 @@ class TaskDetailTableViewController: UITableViewController {
 
     var task: Task?
     
-    var dueDateValue: NSDate?
+    var dueDateValue: Date?
     
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var taskDueTextField: UITextField!
@@ -29,22 +29,22 @@ class TaskDetailTableViewController: UITableViewController {
         }
     }
     
-    @IBAction func saveButtonTapped(sender: AnyObject) {
+    @IBAction func saveButtonTapped(_ sender: AnyObject) {
         updateTask()
-        navigationController?.popViewControllerAnimated(true)
+        let _ = navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func cancelButtonTapped(_ sender: AnyObject) {
+        let _ = navigationController?.popViewController(animated: true)
     }
 
-    @IBAction func datePickerValueChanged(sender: UIDatePicker) {
+    @IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
         
         self.taskDueTextField.text = sender.date.stringValue()
         self.dueDateValue = sender.date
     }
 
-    @IBAction func userTappedView(sender: AnyObject) {
+    @IBAction func userTappedView(_ sender: AnyObject) {
         
         self.taskNameTextField.resignFirstResponder()
         self.taskDueTextField.resignFirstResponder()
@@ -64,7 +64,7 @@ class TaskDetailTableViewController: UITableViewController {
         }
     }
     
-    func updateWithTask(task: Task) {
+    func updateWithTask(_ task: Task) {
         self.task = task
         
         title = task.name

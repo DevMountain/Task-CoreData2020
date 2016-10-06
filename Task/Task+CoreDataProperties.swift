@@ -14,7 +14,7 @@ import CoreData
 
 extension Task {
 
-    @NSManaged var due: NSDate?
+    @NSManaged var due: Date?
     @NSManaged var isComplete: NSNumber
     @NSManaged var name: String
     @NSManaged var notes: String?

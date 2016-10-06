@@ -16,27 +16,27 @@ class Stack {
     lazy var managedObjectContext: NSManagedObjectContext = Stack.setUpMainContext()
     
     static func setUpMainContext() -> NSManagedObjectContext {
-        let bundle = NSBundle.mainBundle()
-        guard let model = NSManagedObjectModel.mergedModelFromBundles([bundle])
+        let bundle = Bundle.main
+        guard let model = NSManagedObjectModel.mergedModel(from: [bundle])
             else { fatalError("model not found") }
         let psc = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try! psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
-            URL: storeURL(), options: nil)
+        try! psc.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil,
+            at: storeURL(), options: nil)
         let context = NSManagedObjectContext(
-            concurrencyType: .MainQueueConcurrencyType)
+            concurrencyType: .mainQueueConcurrencyType)
         context.persistentStoreCoordinator = psc
         return context
     }
     
-    static func storeURL () -> NSURL? {
-        let documentsDirectory: NSURL?
+    static func storeURL () -> URL? {
+        let documentsDirectory: URL?
         do {
-            documentsDirectory = try NSFileManager.defaultManager().URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: true)
+            documentsDirectory = try FileManager.default.url(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask, appropriateFor: nil, create: true)
         } catch {
             documentsDirectory = nil
         }
         
-        return documentsDirectory?.URLByAppendingPathComponent("db.sqlite")
+        return documentsDirectory?.appendingPathComponent("db.sqlite")
     }
 
 }

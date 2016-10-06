@@ -12,11 +12,11 @@ import CoreData
 @objc(Task)
 class Task: NSManagedObject {
     
-    convenience init(name: String, notes: String? = nil, due: NSDate? = nil, context: NSManagedObjectContext = Stack.sharedStack.managedObjectContext) {
+    convenience init(name: String, notes: String? = nil, due: Date? = nil, context: NSManagedObjectContext = Stack.sharedStack.managedObjectContext) {
         
-        let entity = NSEntityDescription.entityForName("Task", inManagedObjectContext: context)!
+        let entity = NSEntityDescription.entity(forEntityName: "Task", in: context)!
         
-        self.init(entity: entity, insertIntoManagedObjectContext: context)
+        self.init(entity: entity, insertInto: context)
         
         self.name = name
         self.notes = notes

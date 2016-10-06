@@ -25,31 +25,31 @@ class ButtonTableViewCell: UITableViewCell {
         
     }
     
-    @IBAction func buttonTapped(sender: AnyObject) {
+    @IBAction func buttonTapped(_ sender: AnyObject) {
         
         if let delegate = delegate {
             delegate.buttonCellButtonTapped(self)
         }
     }
     
-    func updateButton(isComplete: Bool) {
+    func updateButton(_ isComplete: Bool) {
         
         if isComplete {
-            completeButton.setImage(UIImage(named: "complete"), forState: .Normal)
+            completeButton.setImage(UIImage(named: "complete"), for: UIControlState())
         } else {
-            completeButton.setImage(UIImage(named: "incomplete"), forState: .Normal)
+            completeButton.setImage(UIImage(named: "incomplete"), for: UIControlState())
         }
     }
 }
 
 protocol ButtonTableViewCellDelegate {
     
-    func buttonCellButtonTapped(sender: ButtonTableViewCell)
+    func buttonCellButtonTapped(_ sender: ButtonTableViewCell)
 }
 
 extension ButtonTableViewCell {
     
-    func updateWithTask(task: Task) {
+    func updateWithTask(_ task: Task) {
         
         primaryLabel.text = task.name
         updateButton(task.isComplete.boolValue)
