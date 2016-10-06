@@ -14,15 +14,18 @@ class TaskController {
     static let sharedController = TaskController()
 	
     init() {
-		let request: NSFetchRequest<Task> = NSFetchRequest<Task>(entityName: "Task")
+		let request: NSFetchRequest<Task> = Task.fetchRequest()
         let completedSortDescriptor = NSSortDescriptor(key: "isComplete", ascending: true)
         let dueSortDescriptor = NSSortDescriptor(key: "due", ascending: true)
         request.sortDescriptors = [completedSortDescriptor, dueSortDescriptor]
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: Stack.sharedStack.managedObjectContext, sectionNameKeyPath: "isComplete", cacheName: nil)
+        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                                   managedObjectContext: CoreDataStack.context,
+                                                                   sectionNameKeyPath: "isComplete",
+                                                                   cacheName: nil)
         do { 
             try fetchedResultsController.performFetch()
-        } catch let error as NSError {
-            print("Unable to perform fetch request: \(error.localizedDescription)")
+        } catch {
+            print("Unable to perform fetch request: \(error)")
         }
     }
 	
@@ -36,7 +39,7 @@ class TaskController {
     func update(task: Task, name: String, notes: String?, due: Date?) {
         task.name = name
         task.notes = notes
-        task.due = due
+        task.due = due as NSDate?
         saveToPersistentStorage()
     }
     
@@ -46,7 +49,7 @@ class TaskController {
     }
     
     func toggleIsCompleteFor(task: Task) {
-        task.isComplete = !task.isComplete.boolValue as NSNumber
+        task.isComplete = !task.isComplete
         saveToPersistentStorage()
     }
     
@@ -55,13 +58,15 @@ class TaskController {
     private func saveToPersistentStorage() {
         
         do {
-            try Stack.sharedStack.managedObjectContext.save()
+            try CoreDataStack.context.save()
         } catch {
             print("Error saving Managed Object Context. Items not saved.")
         }
     }
 	
 	// MARK: Properties
+	
+	let fetchedResultsController: NSFetchedResultsController<Task>
 
 	var mockTasks: [Task] {
 		let sampleTask1 = Task(name: "Go grocery shopping", notes: "Costco")
@@ -74,6 +79,4 @@ class TaskController {
 		
 		return [sampleTask1, sampleTask2, sampleTask3, sampleTask4]
 	}
-	
-	let fetchedResultsController: NSFetchedResultsController<Task>
 }

@@ -19,7 +19,7 @@ class ButtonTableViewCell: UITableViewCell {
 	func update(withTask task: Task) {
 		
 		primaryLabel.text = task.name
-		updateButton(task.isComplete.boolValue)
+		updateButton(task.isComplete)
 	}
 	
 	// MARK: Private
