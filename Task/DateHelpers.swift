@@ -8,13 +8,13 @@
 
 import Foundation
 
-extension NSDate {
+extension Date {
     
     func stringValue() -> String {
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .MediumStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
         
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self)
     }
 
 }

@@ -9,75 +9,75 @@
 import UIKit
 
 class TaskDetailTableViewController: UITableViewController {
-
-    var task: Task?
-    
-    var dueDateValue: NSDate?
-    
-    @IBOutlet weak var taskNameTextField: UITextField!
-    @IBOutlet weak var taskDueTextField: UITextField!
-    @IBOutlet weak var taskNotesTextView: UITextView!
-    @IBOutlet var dueDatePicker: UIDatePicker!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        taskDueTextField.inputView = dueDatePicker
-        
-        if let task = task {
-            updateWithTask(task)
-        }
-    }
-    
-    @IBAction func saveButtonTapped(sender: AnyObject) {
-        updateTask()
-        navigationController?.popViewControllerAnimated(true)
-    }
-    
-    @IBAction func cancelButtonTapped(sender: AnyObject) {
-        navigationController?.popViewControllerAnimated(true)
-    }
-
-    @IBAction func datePickerValueChanged(sender: UIDatePicker) {
-        
-        self.taskDueTextField.text = sender.date.stringValue()
-        self.dueDateValue = sender.date
-    }
-
-    @IBAction func userTappedView(sender: AnyObject) {
-        
-        self.taskNameTextField.resignFirstResponder()
-        self.taskDueTextField.resignFirstResponder()
-        self.taskNotesTextView.resignFirstResponder()
-    }
-
-    func updateTask() {
-        
-        guard let name = taskNameTextField.text else {return}
-        let due = dueDateValue
-        let notes = taskNotesTextView.text
-        
-        if let task = self.task {
-            TaskController.sharedController.updateTask(task, name: name, notes: notes, due: due)
-        } else {
-            TaskController.sharedController.addTask(name, notes: notes, due: due)
-        }
-    }
-    
-    func updateWithTask(task: Task) {
-        self.task = task
-        
-        title = task.name
-        taskNameTextField.text = task.name
-        
-        if let due = task.due {
-            taskDueTextField.text = due.stringValue()
-        }
-        
-        if let notes = task.notes {
-            taskNotesTextView.text = notes
-        }
-
-    }
-
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		taskDueTextField.inputView = dueDatePicker
+		
+		updateViews()
+	}
+	
+	// MARK: Actions
+	
+	@IBAction func saveButtonTapped(_ sender: AnyObject) {
+		updateTask()
+		let _ = navigationController?.popViewController(animated: true)
+	}
+	
+	@IBAction func cancelButtonTapped(_ sender: AnyObject) {
+		let _ = navigationController?.popViewController(animated: true)
+	}
+	
+	@IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
+		
+		self.taskDueTextField.text = sender.date.stringValue()
+		self.dueDateValue = sender.date
+	}
+	
+	@IBAction func userTappedView(_ sender: AnyObject) {
+		
+		self.taskNameTextField.resignFirstResponder()
+		self.taskDueTextField.resignFirstResponder()
+		self.taskNotesTextView.resignFirstResponder()
+	}
+	
+	// MARK: Private
+	
+	private func updateTask() {
+		
+		guard let name = taskNameTextField.text else {return}
+		let due = dueDateValue
+		let notes = taskNotesTextView.text
+		
+		if let task = self.task {
+			TaskController.sharedController.update(task: task, name: name, notes: notes, due: due)
+		} else {
+			TaskController.sharedController.add(taskWithName: name, notes: notes, due: due)
+		}
+	}
+	
+	private func updateViews() {
+		guard let task = task, isViewLoaded else { return }
+		
+		title = task.name
+		taskNameTextField.text = task.name
+		taskDueTextField.text = (task.due as Date?)?.stringValue()
+		taskNotesTextView.text = task.notes
+	}
+	
+	// MARK: Properties
+	
+	var task: Task? {
+		didSet {
+			updateViews()
+		}
+	}
+	
+	var dueDateValue: Date?
+	
+	@IBOutlet weak var taskNameTextField: UITextField!
+	@IBOutlet weak var taskDueTextField: UITextField!
+	@IBOutlet weak var taskNotesTextView: UITextView!
+	@IBOutlet var dueDatePicker: UIDatePicker!
 }

@@ -12,47 +12,32 @@ import UIKit
 
 class ButtonTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var completeButton: UIButton!
-    @IBOutlet weak var primaryLabel: UILabel!
-    
-    // MARK: - Complete Button Drawing Properties
-    
-    var delegate: ButtonTableViewCellDelegate?
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-        
+    @IBAction func buttonTapped(_ sender: AnyObject) {
+		delegate?.buttonCellButtonTapped(self)
     }
-    
-    @IBAction func buttonTapped(sender: AnyObject) {
-        
-        if let delegate = delegate {
-            delegate.buttonCellButtonTapped(self)
-        }
+	
+	func update(withTask task: Task) {
+		
+		primaryLabel.text = task.name
+		updateButton(task.isComplete)
+	}
+	
+	// MARK: Private
+	
+    private func updateButton(_ isComplete: Bool) {
+		let imageName = isComplete ? "complete" : "incomplete"
+		completeButton.setImage(UIImage(named: imageName), for: .normal)
     }
-    
-    func updateButton(isComplete: Bool) {
-        
-        if isComplete {
-            completeButton.setImage(UIImage(named: "complete"), forState: .Normal)
-        } else {
-            completeButton.setImage(UIImage(named: "incomplete"), forState: .Normal)
-        }
-    }
+	
+	// MARK: Properties
+	
+	var delegate: ButtonTableViewCellDelegate?
+	
+	@IBOutlet weak var completeButton: UIButton!
+	@IBOutlet weak var primaryLabel: UILabel!
 }
 
 protocol ButtonTableViewCellDelegate {
-    
-    func buttonCellButtonTapped(sender: ButtonTableViewCell)
-}
-
-extension ButtonTableViewCell {
-    
-    func updateWithTask(task: Task) {
-        
-        primaryLabel.text = task.name
-        updateButton(task.isComplete.boolValue)
-    }
+    func buttonCellButtonTapped(_ sender: ButtonTableViewCell)
 }
 

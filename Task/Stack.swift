@@ -1,42 +1,24 @@
 //
 //  Stack.swift
-//  Task
 //
-//  Created by Caleb Hicks on 10/21/15.
-//  Copyright © 2015 DevMountain. All rights reserved.
-//
+
 
 import Foundation
 import CoreData
 
-class Stack {
-    
-    static let sharedStack = Stack()
-    
-    lazy var managedObjectContext: NSManagedObjectContext = Stack.setUpMainContext()
-    
-    static func setUpMainContext() -> NSManagedObjectContext {
-        let bundle = NSBundle.mainBundle()
-        guard let model = NSManagedObjectModel.mergedModelFromBundles([bundle])
-            else { fatalError("model not found") }
-        let psc = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try! psc.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil,
-            URL: storeURL(), options: nil)
-        let context = NSManagedObjectContext(
-            concurrencyType: .MainQueueConcurrencyType)
-        context.persistentStoreCoordinator = psc
-        return context
-    }
-    
-    static func storeURL () -> NSURL? {
-        let documentsDirectory: NSURL?
-        do {
-            documentsDirectory = try NSFileManager.defaultManager().URLForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomain: NSSearchPathDomainMask.UserDomainMask, appropriateForURL: nil, create: true)
-        } catch {
-            documentsDirectory = nil
-        }
-        
-        return documentsDirectory?.URLByAppendingPathComponent("db.sqlite")
-    }
-
+enum CoreDataStack {
+	
+	static let container: NSPersistentContainer = {
+		
+		let appName = Bundle.main.object(forInfoDictionaryKey: (kCFBundleNameKey as String)) as! String
+		let container = NSPersistentContainer(name: appName)
+		container.loadPersistentStores() { (storeDescription, error) in
+			if let error = error as NSError? {
+				fatalError("Unresolved error \(error), \(error.userInfo)")
+			}
+		}
+		return container
+	}()
+	
+	static var context: NSManagedObjectContext { return container.viewContext }
 }
