@@ -13,18 +13,18 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        TaskController.sharedController.fetchedResultsController.delegate = self
+        TaskController.shared.fetchedResultsController.delegate = self
     }
 
     // MARK: UITableViewDataSource/Delegate
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let sections = TaskController.sharedController.fetchedResultsController.sections else { return 1 }
+        guard let sections = TaskController.shared.fetchedResultsController.sections else { return 1 }
         return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = TaskController.sharedController.fetchedResultsController.sections else { return 0 }
+        guard let sections = TaskController.shared.fetchedResultsController.sections else { return 0 }
         let sectionInfo = sections[section]
         return sectionInfo.numberOfObjects
     }
@@ -33,15 +33,15 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
 		var cell: ButtonTableViewCell! = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? ButtonTableViewCell
 		if cell == nil { cell = ButtonTableViewCell() }
 
-		let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
+		let task = TaskController.shared.fetchedResultsController.object(at: indexPath)
         cell.update(withTask: task)
         cell.delegate = self
         return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let sectionInfo = TaskController.sharedController.fetchedResultsController.sections,
-            let index = Int(sectionInfo[section].name) else {return nil}
+        guard let sectionInfo = TaskController.shared.fetchedResultsController.sections,
+            let index = Int(sectionInfo[section].name) else { return nil }
 
         if index == 0 {
             return "Incomplete Tasks"
@@ -52,8 +52,8 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-			TaskController.sharedController.remove(task: task)
+            let task = TaskController.shared.fetchedResultsController.object(at: indexPath)
+			TaskController.shared.remove(task: task)
         }
     }
     
@@ -66,18 +66,18 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .delete:
-            guard let indexPath = indexPath else {return}
+            guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .fade)
         case .insert:
-            guard let newIndexPath = newIndexPath else {return}
+            guard let newIndexPath = newIndexPath else { return }
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         case .move:
             guard let indexPath = indexPath,
-                let newIndexPath = newIndexPath else {return}
+                let newIndexPath = newIndexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.insertRows(at: [newIndexPath], with: .automatic)
         case .update:
-            guard let indexPath = indexPath else {return}
+            guard let indexPath = indexPath else { return }
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
@@ -101,8 +101,8 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
     
     func buttonCellButtonTapped(_ sender: ButtonTableViewCell) {
         guard let indexPath = tableView.indexPath(for: sender) else { return }
-		let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
-        TaskController.sharedController.toggleIsCompleteFor(task: task)
+		let task = TaskController.shared.fetchedResultsController.object(at: indexPath)
+        TaskController.shared.toggleIsCompleteFor(task: task)
     }
 
     // MARK: Navigation
@@ -111,9 +111,10 @@ class TaskListTableViewController: UITableViewController, NSFetchedResultsContro
         if segue.identifier == "toViewTask" {
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
 			
-			let task = TaskController.sharedController.fetchedResultsController.object(at: indexPath)
+			let task = TaskController.shared.fetchedResultsController.object(at: indexPath)
             let detailVC = segue.destination as? TaskDetailTableViewController
             detailVC?.task = task
+            detailVC?.dueDateValue = task.due as? Date
         }
     }
 }

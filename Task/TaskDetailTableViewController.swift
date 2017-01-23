@@ -12,31 +12,27 @@ class TaskDetailTableViewController: UITableViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		taskDueTextField.inputView = dueDatePicker
-		
 		updateViews()
 	}
 	
 	// MARK: Actions
 	
-	@IBAction func saveButtonTapped(_ sender: AnyObject) {
+	@IBAction func saveButtonTapped(_ sender: Any) {
 		updateTask()
 		let _ = navigationController?.popViewController(animated: true)
 	}
 	
-	@IBAction func cancelButtonTapped(_ sender: AnyObject) {
+	@IBAction func cancelButtonTapped(_ sender: Any) {
 		let _ = navigationController?.popViewController(animated: true)
 	}
 	
 	@IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
-		
 		self.taskDueTextField.text = sender.date.stringValue()
 		self.dueDateValue = sender.date
 	}
 	
-	@IBAction func userTappedView(_ sender: AnyObject) {
-		
+	@IBAction func userTappedView(_ sender: Any) {
 		self.taskNameTextField.resignFirstResponder()
 		self.taskDueTextField.resignFirstResponder()
 		self.taskNotesTextView.resignFirstResponder()
@@ -46,14 +42,14 @@ class TaskDetailTableViewController: UITableViewController {
 	
 	private func updateTask() {
 		
-		guard let name = taskNameTextField.text else {return}
+		guard let name = taskNameTextField.text else { return }
 		let due = dueDateValue
 		let notes = taskNotesTextView.text
 		
 		if let task = self.task {
-			TaskController.sharedController.update(task: task, name: name, notes: notes, due: due)
+			TaskController.shared.update(task: task, name: name, notes: notes, due: due)
 		} else {
-			TaskController.sharedController.add(taskWithName: name, notes: notes, due: due)
+			TaskController.shared.add(taskWithName: name, notes: notes, due: due)
 		}
 	}
 	
