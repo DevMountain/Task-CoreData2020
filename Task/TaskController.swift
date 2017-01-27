@@ -14,19 +14,7 @@ class TaskController {
     static let shared = TaskController()
 	
     init() {
-		let request: NSFetchRequest<Task> = Task.fetchRequest()
-        let completedSortDescriptor = NSSortDescriptor(key: "isComplete", ascending: true)
-        let dueSortDescriptor = NSSortDescriptor(key: "due", ascending: true)
-        request.sortDescriptors = [completedSortDescriptor, dueSortDescriptor]
-        self.fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
-                                                                   managedObjectContext: CoreDataStack.context,
-                                                                   sectionNameKeyPath: "isComplete",
-                                                                   cacheName: nil)
-        do { 
-            try fetchedResultsController.performFetch()
-        } catch {
-            print("Unable to perform fetch request: \(error)")
-        }
+        tasks = fetchTasks()
     }
 	
 	// MARK: Public
@@ -34,6 +22,7 @@ class TaskController {
 	func add(taskWithName name: String, notes: String?, due: Date?) {
         let _ = Task(name: name, notes: notes, due: due)
         saveToPersistentStore()
+        tasks = fetchTasks()
     }
     
     func update(task: Task, name: String, notes: String?, due: Date?) {
@@ -41,11 +30,13 @@ class TaskController {
         task.notes = notes
         task.due = due as NSDate?
         saveToPersistentStore()
+        tasks = fetchTasks()
     }
     
     func remove(task: Task) {
         task.managedObjectContext?.delete(task)
         saveToPersistentStore()
+        tasks = fetchTasks()
     }
     
     func toggleIsCompleteFor(task: Task) {
@@ -63,8 +54,14 @@ class TaskController {
             print("Error saving Managed Object Context. Items not saved.")
         }
     }
+    
+    private func fetchTasks() -> [Task] {
+        let request: NSFetchRequest<Task> = Task.fetchRequest()
+        return (try? CoreDataStack.context.fetch(request)) ?? []
+    }
 	
 	// MARK: Properties
-	
-	let fetchedResultsController: NSFetchedResultsController<Task>
+    
+    var tasks: [Task] = []
+    
 }
