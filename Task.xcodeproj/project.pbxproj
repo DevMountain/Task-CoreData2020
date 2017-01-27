@@ -21,7 +21,7 @@
 		68D81D921BD89FD100A9F8FE /* Task.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 68D81D8F1BD89FD100A9F8FE /* Task.xcdatamodeld */; };
 		68D81D9D1BD8A62E00A9F8FE /* TaskController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D78A5B1BD6C98E00509A87 /* TaskController.swift */; };
 		9DB71AC71DA6BC8300E1353E /* Task+Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB71AC61DA6BC8300E1353E /* Task+Convenience.swift */; };
-		9DB71AC91DA6BD8D00E1353E /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB71AC81DA6BD8D00E1353E /* Stack.swift */; };
+		9DB71AC91DA6BD8D00E1353E /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB71AC81DA6BD8D00E1353E /* CoreDataStack.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 		68D78A611BD6FC6F00509A87 /* DateHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		68D81D901BD89FD100A9F8FE /* Task.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Task.xcdatamodel; sourceTree = "<group>"; };
 		9DB71AC61DA6BC8300E1353E /* Task+Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+Convenience.swift"; sourceTree = "<group>"; };
-		9DB71AC81DA6BD8D00E1353E /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		9DB71AC81DA6BD8D00E1353E /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +117,7 @@
 		1A04AB031CEA671500AE72A5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				9DB71AC81DA6BD8D00E1353E /* Stack.swift */,
+				9DB71AC81DA6BD8D00E1353E /* CoreDataStack.swift */,
 				9DB71AC61DA6BC8300E1353E /* Task+Convenience.swift */,
 			);
 			name = Model;
@@ -332,7 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68D78A601BD6E97500509A87 /* ButtonTableViewCell.swift in Sources */,
-				9DB71AC91DA6BD8D00E1353E /* Stack.swift in Sources */,
+				9DB71AC91DA6BD8D00E1353E /* CoreDataStack.swift in Sources */,
 				9DB71AC71DA6BC8300E1353E /* Task+Convenience.swift in Sources */,
 				68D81D921BD89FD100A9F8FE /* Task.xcdatamodeld in Sources */,
 				1A8289D51CEB8827001C9887 /* TaskListTableViewController.swift in Sources */,
