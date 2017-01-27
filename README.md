@@ -126,7 +126,7 @@ Go to `TaskListTableViewController.swift` and finish setting up your views.
 You will want this view to reload the table view each time it appears in order to display newly created tasks.
 
 1. Implement the UITableViewDataSource functions using the TaskController tasks array
-2. Set up your cells to display the name of the task (we'll create a custom table view cell later so we'll have to come back to this function later and change some things) 
+2. Set up your cells to display the name of the task (we'll create a custom table view cell later so we'll have to come back to this function later and change some things)
 3. Reload the table view in `viewWillAppear(_:)`
 
 
