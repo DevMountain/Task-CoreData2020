@@ -190,8 +190,8 @@ You could place this extension code directly into the view controller that will 
 func stringValue() -> String {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
-    
-    return formatter.stringFromDate(self)
+
+    return formatter.string(from: self)
 }
 ```
 
