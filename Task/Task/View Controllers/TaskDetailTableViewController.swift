@@ -10,8 +10,11 @@ import UIKit
 
 class TaskDetailTableViewController: UITableViewController {
 
+    // MARK: - Class Properties
+    var task: Task?
+    var dueDateValue: Date?
 
-    //outlets for detail view
+    // MARK: - Outlets
     @IBOutlet weak var taskNameTextField: UITextField!
     @IBOutlet weak var taskDueTextField: UITextField!
     @IBOutlet var dueDatePicker: UIDatePicker!
@@ -23,19 +26,7 @@ class TaskDetailTableViewController: UITableViewController {
         updateViews()
     }
 
-    var task: Task?
-
-    var dueDateValue: Date?
-
-    private func updateViews() {
-        guard let task = task, isViewLoaded else { return }
-        title = task.name
-        taskNameTextField.text = task.name
-        taskDueTextField.text = (task.due as Date?)?.stringValue()
-        taskNotesTextView.text = task.notes
-
-    }
-
+    // MARK: - Actions
     @IBAction func saveButtonTapped(_ sender: Any) {
 
         guard let name = taskNameTextField.text, let notes = taskNotesTextView.text, let date = dueDateValue else { return }
@@ -53,7 +44,7 @@ class TaskDetailTableViewController: UITableViewController {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
+
     @IBAction func datePickerValueChanged(_ sender: UIDatePicker) {
         self.taskDueTextField.text = sender.date.stringValue()
         self.dueDateValue = sender.date
@@ -65,4 +56,13 @@ class TaskDetailTableViewController: UITableViewController {
         self.taskNotesTextView.resignFirstResponder()
     }
 
+    // MARK: - Class Methods
+    private func updateViews() {
+        guard let task = task, isViewLoaded else { return }
+        title = task.name
+        taskNameTextField.text = task.name
+        taskDueTextField.text = (task.due as Date?)?.stringValue()
+        taskNotesTextView.text = task.notes
+
+    }
 } // class end bracket

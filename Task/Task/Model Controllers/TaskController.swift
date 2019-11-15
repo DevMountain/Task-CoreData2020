@@ -15,29 +15,18 @@ class TaskController {
 
     static let shared = TaskController()
     // MARK:- Property
-    var fetchedResultsController: NSFetchedResultsController<Task>
-
     /**
-     Initalizes an instance of the TaskController class to interact with Task objects using the singleton pattern
+     Source of Truth
 
-     When this class is initalized, an NSFetchedResultsController is initalized to be used with Task objects. The initalized NSFetchedResultsController is assigned to the TaskController's resultsController property, and then the resultsController calls the `performFetch()` method
+     Creates an array of Task Objects and the value to either the results of a fetchRequest or an empty array
+     - fetchRequest: We set our fetchRequest to be *of type* a `NSFetchRequest` that can interact with `Task` objects
+
+     - returns: The results of our fetch request *or* an empty array
      */
-    init() {
-        //creates request
-        let request: NSFetchRequest<Task> = Task.fetchRequest()
-        // Add the Sort Descriptors to the request. Sort Descriptors allows us to determine how we want the data organized from the fetch request
-        request.sortDescriptors = [NSSortDescriptor(key: "isComplete", ascending: true)]
-        // Initialize a NSfetchedResultsController using the Fetch Request we just created
-        let resultsController: NSFetchedResultsController<Task> = NSFetchedResultsController(fetchRequest: request, managedObjectContext: CoreDataStack.context, sectionNameKeyPath: "Complete", cacheName: nil)
-        // Set the initized NSFRC to our property
-        fetchedResultsController = resultsController
 
-
-        do{ // do/catch will display an error if fetchedResultsController isn't working
-            try fetchedResultsController.performFetch()
-        } catch {
-            print("There was an error performing the fetch. \(error.localizedDescription)")
-        }
+    var tasks: [Task] {
+        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        return (try? CoreDataStack.context.fetch(fetchRequest)) ?? []
     }
 
     //MARK: - CRUD
