@@ -23,15 +23,15 @@ Students who complete this project independently are able to:
 # Part One - Project Planning, Model Objects and Controllers, Persistence with Core Data
 ## View Hierarchy
 Set up a basic List-Detail view hierarchy using a UITableViewController for a TaskListTableViewController and a TaskDetailTableViewController.
-1 Add a UITableViewController scene that will be used to list tasks
-2 Embed the scene in a UINavigationController
-3 Add an Add system bar button item to the navigation bar
-4 Add a class file TaskListTableViewController.swift and assign the scene in the Storyboard
-5 Add a UITableViewController scene that will be used to add and view tasks
+* 1 Add a UITableViewController scene that will be used to list tasks
+* 2 Embed the scene in a UINavigationController
+* 3 Add an Add system bar button item to the navigation bar
+* 4 Add a class file TaskListTableViewController.swift and assign the scene in the Storyboard
+* 5 Add a UITableViewController scene that will be used to add and view tasks
 	* note: We will use a static table view for our Task Detail view, static table views should be used sparingly, but they can be useful for a table view that will never change, such as a basic form.
-6 Add a segue from the Add bar button item from the first scene to the second scene
-7 Add a segue from the prototype cell in the first scene to the second scene
-8 Add a class file TaskDetailTableViewController.swift and assign the scene in the Storyboard
+* 6 Add a segue from the Add bar button item from the first scene to the second scene
+* 7 Add a segue from the prototype cell in the first scene to the second scene
+* 8 Add a class file TaskDetailTableViewController.swift and assign the scene in the Storyboard
 	* note: We will finish building our views later on
 ## Add a Core Data Stack
 You will add a CoreDataStack class that will initialize your persistent store, coordinator, and managed object context. Then you will build your Core Data data model.
@@ -133,68 +133,70 @@ func stringValue() -> String {
 3 Go back to your updateViews() function and use task.due.stringValue() to set the text for the due label (you may have to cast task.due to Date first)
 ## Capture the Due Date
 UIDatePicker is used to capture date and time information from a user. By setting a UIDatePicker to the inputView of a UITextField, a UIDatePicker will appear in place of the traditional keyboard. You can use a target action, delegate, or IBAction to capture the date that the user selects and set that to a variable.
-1 Add a UIDatePicker object as a supplementary view to the detail scene
+* 1 Add a UIDatePicker object as a supplementary view to the detail scene
 	* note: Drag a UIDatePicker object to the outline area of the Storyboard and Interface Builder will drop it directly beneath the First Responder object
-2 Set the UIDatePicker to Date mode
-3 Create an IBOutlet named dueDatePicker from the UIDatePicker supplementary view to the class file
-4 In viewDidLoad(), set the date picker as the taskDueTextFields input view
+* 2 Set the UIDatePicker to Date mode
+* 3 Create an IBOutlet named dueDatePicker from the UIDatePicker supplementary view to the class file
+* 4 In viewDidLoad(), set the date picker as the taskDueTextFields input view
 	* hint: taskDueTextField.inputView = dueDatePicker
-5 Create an IBAction from the UIDatePicker supplementary view to the class file named datePickerValueChanged
+* 5 Create an IBAction from the UIDatePicker supplementary view to the class file named datePickerValueChanged
 	* note: Choose UIDatePicker as the sender type so that you do not need to cast the object to get the date off of it
-6 Implement the action to store the updated date value to dueDateValue and to set the taskDueTextField.text to the string value from the date picker’s date
+* 6 Implement the action to store the updated date value to dueDateValue and to set the taskDueTextField.text to the string value from the date picker’s date
+## Dismiss the view
 Dismissing the keyboard can be done in many ways. When using a custom keyboard you have two common options: add a toolbar with a ‘Done’ button that resigns the first responder as the field’s input accessory, or add a UITapGestureRecognizer that does the same. We’ll do the latter.
-1 Add a UITapGestureRecognizer object to the table view on the Task Detail Scene (just drag it out the same way you did with the UIDatePicker)
-2 Create an IBAction from the UITapGestureRecognizer named userTappedView that resigns the first responder on all text fields or text views
+* 1 Add a UITapGestureRecognizer object to the table view on the Task Detail Scene (just drag it out the same way you did with the UIDatePicker)
+* 2 Create an IBAction from the UITapGestureRecognizer named userTappedView that resigns the first responder on all text fields or text views
 ## Segue
 Recall that you created two segues from the List View to the Detail View. The segue from the plus button will tell the TaskDetailTableViewController that it should create a new task. The segue from a selected cell will tell the TaskDetailTableViewController that it should display a previously created task and save any changes made to it.
-1 If you haven’t already, give the segue from a table view cell to the detail view an identifier.
-2 Add a prepare(for segue: UIStoryboardSegue, sender: Any?) function to the TaskListTableViewController if it’s not there already
-3 Implement the prepare(for segue: UIStoryboardSegue, sender: Any?) function. Be sure to check the identifier of the segue, get the destination of the segue, then get the index path for the selected row and use that index path to pass the selected task to the task property on the TaskDetailTableViewController
+* 1 If you haven’t already, give the segue from a table view cell to the detail view an identifier.
+* 2 Add a prepare(for segue: UIStoryboardSegue, sender: Any?) function to the TaskListTableViewController if it’s not there already
+*3 Implement the prepare(for segue: UIStoryboardSegue, sender: Any?) function. Be sure to check the identifier of the segue, get the destination of the segue, then get the index path for the selected row and use that index path to pass the selected task to the task property on the TaskDetailTableViewController
 	* note: You will also want to pass the due property from your selected task to the dueDateValue property in your TaskDetailTableViewController
-4 Go to the TaskDetailTableViewController class and update your task property to a computed property that uses a didSet property observer to call updateViews() every time task gets set. Thus, when you pass the task from your prepare(for segue: UIStoryboardSegue, sender: Any?) function to the task computed property it will update the views to reflect the properties of the selected task.
+* 4 Go to the TaskDetailTableViewController class and update your task property to a computed property that uses a didSet property observer to call updateViews() every time task gets set. Thus, when you pass the task from your prepare(for segue: UIStoryboardSegue, sender: Any?) function to the task computed property it will update the views to reflect the properties of the selected task.
 ## Custom Table View Cell
 Build a custom table view cell to display tasks. The cell should display the task name and have a button that acts as a checkmark to display and toggle the completion status of the task.
 It is best practice to make table view cells reusable between apps. As a result, you will build a ButtonTableViewCell rather than a TaskTableViewCell that can be reused any time you want a cell with a button. You will add an extension to the ButtonTableViewCell for updating the view with a Task.
-1 Add a new ButtonTableViewCell.swift as a subclass of UITableViewCell
-2 Assign the new class to the prototype cell on the Task List Scene in Main.storyboard
-3 Design the prototype cell with a label on the left and a square button on the right margin
+* 1 Add a new ButtonTableViewCell.swift as a subclass of UITableViewCell
+* 2 Assign the new class to the prototype cell on the Task List Scene in Main.storyboard
+* 3 Design the prototype cell with a label on the left and a square button on the right margin
 	* note: If you are using a stack view, constrain the aspect ratio of the button to 1:1 to force the button into a square that gives the remainder of the space to the label
 	* note: Use the image edge inset to shrink the image to not fill the entire height of the content view, you can adjust the image edge insets in the Size Inspector of the UIButton
-4 Remove text from the button, but add a image of an empty checkbox
+* 4 Remove text from the button, but add a image of an empty checkbox
 	* note: Use the ‘complete’ and ‘incomplete’ image assets included in the project folder
-5 Create an IBOutlet for the label named primaryLabel
-6 Create an IBOutlet for the button named completeButton
-7 Create an IBAction for the button named buttonTapped which you will implement using a custom protocol in the next step
-Implement the ‘update(with:)’ pattern in and extension on the ButtonTableViewCell class.
-1 Add an updateButton(_ isComplete: Bool) function that updates the button’s image to the desired image based on the isComplete Bool
-2 Add an extension to ButtonTableViewCell at the bottom of the class file
-3 Add a function update(withTask task: Task) that updates the label to the name of the task and calls the updateButton(_ isComplete: Bool) function to update the image
-4 Update the tableView(_:cellForRowAt:) table view data source function in your TaskListTableViewController class to call update(withTask task: Task) instead of setting the text label directly (you will have to cast your cell to be a ButtonTableViewCell)
+* 5 Create an IBOutlet for the label named primaryLabel
+* 6 Create an IBOutlet for the button named completeButton
+* 7 Create an IBAction for the button named buttonTapped which you will implement using a custom protocol in the next step
+
+## Implement the ‘update(with:)’ pattern in and extension on the ButtonTableViewCell class.
+* 1 Add an updateButton(_ isComplete: Bool) function that updates the button’s image to the desired image based on the isComplete Bool
+* 2 Add an extension to ButtonTableViewCell at the bottom of the class file
+* 3 Add a function update(withTask task: Task) that updates the label to the name of the task and calls the updateButton(_ isComplete: Bool) function to update the image
+* 4 Update the tableView(_:cellForRowAt:) table view data source function in your TaskListTableViewController class to call update(withTask task: Task) instead of setting the text label directly (you will have to cast your cell to be a ButtonTableViewCell)
 ## Custom Protocol
 Write a protocol for the ButtonTableViewCell to delegate handling a button tap to the TaskListTableViewController, adopt the protocol, and use the delegate method to mark the task as complete and reload the cell.
-1 Add a protocol named ButtonTableViewCellDelegate to the bottom of the class file
-2 Define a required buttonCellButtonTapped(_ sender: ButtonTableViewCell) function
-3 Add an optional delegate property on the ButtonTableViewCell
+* 1 Add a protocol named ButtonTableViewCellDelegate to the bottom of the class file
+* 2 Define a required buttonCellButtonTapped(_ sender: ButtonTableViewCell) function
+* 3 Add an optional delegate property on the ButtonTableViewCell
 	* note: var delegate: ButtonTableViewCellDelegate?
-4 Update the buttonTapped IBAction to check if a delegate is assigned, and if so, call the delegate protocol function
-5 Adopt the protocol in the TaskListTableViewController class
-6 Implement the buttonCellButtonTapped delegate function to capture the Task as a property, toggle task.isComplete, and reload the tapped row. Don’t forget to set your delegate in your tableView(_:cellForRowAt:) function!
+* 4 Update the buttonTapped IBAction to check if a delegate is assigned, and if so, call the delegate protocol function
+* 5 Adopt the protocol in the TaskListTableViewController class
+* 6 Implement the buttonCellButtonTapped delegate function to capture the Task as a property, toggle task.isComplete, and reload the tapped row. Don’t forget to set your delegate in your tableView(_:cellForRowAt:) function!
 	* note: You will need to create a function in TaskController called toggleIsCompleteFor(task: Task) that toggles the isComplete Bool on the Task object passed into the function, this is how you will toggle the task.isComplete in your delegate function
 At this point you should be able to run your project and toggle tasks for the mock tasks you created.
 ## Persistence With Core Data
 Implement your function signatures in TaskController to be able to persist to Core Data. Begin by importing CoreData.
-1 Your saveToPersistentStore() function should call the save() function on the NSManagedObjectContext you set up in the CoreDataStack.
+* 1 Your saveToPersistentStore() function should call the save() function on the NSManagedObjectContext you set up in the CoreDataStack.
 	* note: The save() function on an NSManagedObjectContext instance is a ‘throwing function’ so be sure to account for if it throws an error.
-2 Your fetchTasks -> [Task] function needs to initialize a NSFetchRequest and then use that fetch request to fetch Task objects from the managed object context.
+* 2 Your fetchTasks -> [Task] function needs to initialize a NSFetchRequest and then use that fetch request to fetch Task objects from the managed object context.
 	* note: There is a fetch(_:) function on instances of NSManagedObjectContext that returns the an array of objects that meet the criteria specified by the request. Thus, you can return the result of that function in your fetchTasks() function. fetch(_:) is also a throwing function so be sure to account for an error.
 	* note: To initialize a NSFetchRequest use the following syntax: let request: NSFetchRequest<Task> = Task.fetchRequest()
 	* note: You can also delete your mock tasks that you created earlier at this point
-3 Your add(taskWithName name: String, notes: String?, due: Date?) function should initialize a task object, save the managed object context using saveToPersistentStore(), and then fetch tasks from the managed object context and assign the returned tasks to your controller’s tasks array.
+* 3 Your add(taskWithName name: String, notes: String?, due: Date?) function should initialize a task object, save the managed object context using saveToPersistentStore(), and then fetch tasks from the managed object context and assign the returned tasks to your controller’s tasks array.
 	* note: Initializing a subclass of NSManagedObject like Task automatically puts it into the Core Data managed object context so you don’t need to initialize a Task and put it anywhere.
-4 Your update(task: Task, name: String, notes: String?, due: Date?) function needs to set the name, notes, and due property on the passed in task to be equal to the new name, notes, and due values passed into the function parameters. Then your function needs to call saveToPersistentStore() and set the tasks array to the return result of fetchTasks().
-5 Your remove(task: Task) function should delete the task from the managed object context, save the managed object context, and then fetch tasks from the managed object context and assign the returned tasks to your tasks array.
+* 4 Your update(task: Task, name: String, notes: String?, due: Date?) function needs to set the name, notes, and due property on the passed in task to be equal to the new name, notes, and due values passed into the function parameters. Then your function needs to call saveToPersistentStore() and set the tasks array to the return result of fetchTasks().
+* 5 Your remove(task: Task) function should delete the task from the managed object context, save the managed object context, and then fetch tasks from the managed object context and assign the returned tasks to your tasks array.
 	* note: You can get the managed object context from the task you passed into your function since every managed object exists in a managed object context.
-6 Also be sure to update your toggleIsCompleteFor(task: Task) function to saveToPersistentStore().
+* 6 Also be sure to update your toggleIsCompleteFor(task: Task) function to saveToPersistentStore().
 Your app should now be able to create, update, and remove tasks. It should also persist to Core Data. Test the app and be sure to check if persistence is working. Check for and fix any bugs you might find.
 ## Black Diamonds
 * Add support for projects (task parent object), or tags (task child object) to categorize your tasks
