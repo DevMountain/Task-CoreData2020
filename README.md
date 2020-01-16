@@ -35,12 +35,12 @@ Set up a basic List-Detail view hierarchy using a UITableViewController for a Ta
 	* note: We will finish building our views later on
 ## Add a Core Data Stack
 You will add a CoreDataStack class that will initialize your persistent store, coordinator, and managed object context. Then you will build your Core Data data model.
-1 Create a new file called CoreDataStack.swift.
-2 Import CoreData and then add the following code to the file:
+* Create a new file called CoreDataStack.swift.
+* Import CoreData and then add the following code to the file:
+
+```
 enum CoreDataStack {
-
     static let container: NSPersistentContainer = {
-
         let appName = Bundle.main.object(forInfoDictionaryKey: (kCFBundleNameKey as String)) as! String
         let container = NSPersistentContainer(name: appName)
         container.loadPersistentStores() { (storeDescription, error) in
@@ -50,9 +50,10 @@ enum CoreDataStack {
         }
         return container
     }()
-
     static var context: NSManagedObjectContext { return container.viewContext }
 }
+```
+
 * note: Be sure you understand what is going on in each line of code in your CoreDataStack
 ## Implement Core Data Model
 1 Create a new Data Model template file (File -> New -> File -> Data Model) and be sure to use the app name for the name of the Data Model.
