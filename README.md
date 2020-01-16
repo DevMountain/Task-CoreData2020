@@ -23,15 +23,15 @@ Students who complete this project independently are able to:
 # Part One - Project Planning, Model Objects and Controllers, Persistence with Core Data
 ## View Hierarchy
 Set up a basic List-Detail view hierarchy using a UITableViewController for a TaskListTableViewController and a TaskDetailTableViewController.
-* 1 Add a UITableViewController scene that will be used to list tasks
-* 2 Embed the scene in a UINavigationController
-* 3 Add an Add system bar button item to the navigation bar
-* 4 Add a class file TaskListTableViewController.swift and assign the scene in the Storyboard
-* 5 Add a UITableViewController scene that will be used to add and view tasks
+* Add a UITableViewController scene that will be used to list tasks
+* Embed the scene in a UINavigationController
+* Add an Add system bar button item to the navigation bar
+* Add a class file TaskListTableViewController.swift and assign the scene in the Storyboard
+* Add a UITableViewController scene that will be used to add and view tasks
 	* note: We will use a static table view for our Task Detail view, static table views should be used sparingly, but they can be useful for a table view that will never change, such as a basic form.
-* 6 Add a segue from the Add bar button item from the first scene to the second scene
-* 7 Add a segue from the prototype cell in the first scene to the second scene
-* 8 Add a class file TaskDetailTableViewController.swift and assign the scene in the Storyboard
+* Add a segue from the Add bar button item from the first scene to the second scene
+* Add a segue from the prototype cell in the first scene to the second scene
+* Add a class file TaskDetailTableViewController.swift and assign the scene in the Storyboard
 	* note: We will finish building our views later on
 ## Add a Core Data Stack
 You will add a CoreDataStack class that will initialize your persistent store, coordinator, and managed object context. Then you will build your Core Data data model.
