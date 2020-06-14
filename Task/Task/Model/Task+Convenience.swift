@@ -7,3 +7,14 @@
 //
 
 import Foundation
+import CoreData
+
+extension Task {
+    @discardableResult
+    convenience init (name: String, notes: String?, due: Date?) {
+        self.init(context: CoreDataStack.context)
+        self.name = name
+        self.notes = notes
+        self.due = due
+    }
+}
